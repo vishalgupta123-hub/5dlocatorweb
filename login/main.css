@@ -103,7 +103,7 @@ form .login {
     }
 
     form h3 {
-        font-size: 1.6rem;
+        font-size: 1.8rem;
     }
     
     .input-cont{
@@ -114,11 +114,12 @@ form .login {
     width: 85%;
     padding: 5px 10px;
     font-size: 12px;
+    border-radius:2px;
     }
     
     form .login {
-    width: 93%;
-    padding: 8px 0;
+    width: 90%;
+    padding: 10px 0;
     font-size: 12px;
     letter-spacing:4px;
     }
