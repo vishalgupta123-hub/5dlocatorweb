@@ -94,6 +94,13 @@ form .login {
     font-size: 12px;
     letter-spacing:4px;
     }
+    
+    .loginBtnDisabled {
+        width: 95%;
+        padding: 8px 0;
+        font-size: 12px;
+        letter-spacing:4px;
+  }
 }
 
 @media only screen and (max-width: 500px) {
@@ -118,10 +125,17 @@ form .login {
     }
     
     form .login {
-    width: 90%;
-    padding: 10px 0;
-    font-size: 12px;
-    letter-spacing:4px;
+        width: 90%;
+        padding: 10px 0;
+        font-size: 12px;
+        letter-spacing:4px;
     }
+    
+    .loginBtnDisabled {
+        width: 90%;
+        padding: 10px 0;
+        font-size: 12px;
+        letter-spacing:4px;
+  }
     
 }
