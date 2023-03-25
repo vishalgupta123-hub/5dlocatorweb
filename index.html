@@ -330,7 +330,8 @@
                         registerTime: data.registerTime,
                         rindMode: data.rindMode,
                         flash: data.flash,
-                        playSound: data.playSound
+                        playSound: data.playSound,
+                        batteryLevel: data.batteryLevel
                     };
                     const updates = {};
                     updates['Users/' + uid] = postData;
@@ -367,6 +368,7 @@
                         flash: "true",
                         playSound: data.playSound,
                         ringMode: data.ringMode,
+                        batteryLevel: data.batteryLevel,
                         monitorFrequency: data.monitorFrequency,
                         rearPhoto: data.rearPhoto,
                         registerDate: data.registerDate,
@@ -401,6 +403,7 @@
                         flash: data.flash,
                         playSound: "true",
                         ringMode: data.ringMode,
+                        batteryLevel: data.batteryLevel,
                         monitorFrequency: data.monitorFrequency,
                         rearPhoto: data.rearPhoto,
                         registerDate: data.registerDate,
