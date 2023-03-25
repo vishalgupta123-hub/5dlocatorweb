@@ -79,19 +79,23 @@ form .login {
 @media only screen and (max-width: 500px) {
 
     form h3 {
-        font-size: 32px;
+        font-size: 1.6rem;
+    }
+    
+    .input-cont{
+        gap:4px;
     }
 
     form input {
     width: 85%;
     padding: 5px 10px;
-    font-size: 14px;
+    font-size: 12px;
     }
     
     form .login {
     width: 93%;
-    padding: 5px;
-    font-size: 25px;
+    padding: 8px 0;
+    font-size: 12px;
     letter-spacing:4px;
     }
     
