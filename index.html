@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link href="style.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="favicon.png">
+    <title>Locate your device | 5D Locator</title>
+</head>
+
+<body>
+
+    <div class="active-cont" id="flash-active-cont">
+        <span class="material-symbols-outlined">highlight</span>
+        <h1>Flashlight is now Active</h1>
+    </div>
+    <div class="active-cont" id="sound-active-cont">
+        <span class="material-symbols-outlined">music_note</span>
+        <h1>Sound is now Active</h1>
+    </div>
+    <div class="active-cont" id="flash-sound-active-cont">
+        <div class="active-icons">
+            <span class="material-symbols-outlined">highlight</span>
+            <span class="material-symbols-outlined">music_note</span>
+        </div>
+        <h1>Flash & Sound is Active</h1>
+    </div>
+
+    <div id="mainCont" class="main-cont-below">
+
+        <div class="data-main-cont">
+
+            <div class="info-b">
+                <div class="device-cont ">
+                    <p>Device Name</p>
+                    <b><p id="model-name">[device name]</p></b>
+                </div>
+                
+                <div class="since-cont">
+                    <p>Member Since</p>
+                    <b><p id="register-date-time">[signup-date-time]</p></b>
+                </div>
+    
+                <div class="login-cont">
+                    <p>Last Login</p>
+                    <b><p id="last-login">[last-login]</p></b>
+                </div>
+            </div>
+
+            <div class="address-cont">
+                <p>Address: </p>
+                <b><p id="h3">[address]</p></b>
+            </div>
+
+            <div class="lat-long-cont">
+                <div class="long-cont">
+                    <p>Latitude: </p>
+                    <b><p id="h1">00.000000</p></b>
+                </div>
+                <div class="lat-cont">
+                    <p>Longitude: </p>
+                    <b><p id="h2">00.000000</p></b>
+                </div>
+            </div>
+        </div>
+        
+        <div class="phone-status-cont">
+            
+            <div style="    display: flex;
+            align-items: center;" class="ringmode-cont">
+                <span id="ringmode-icon" class="material-symbols-outlined">
+                    notifications_active
+                </span>
+            </div>
+
+            <div class="battery-cont">
+                
+                <span id="battery-icon" class="material-symbols-outlined">
+                    battery_vert_005
+                </span>
+                <span>
+                    <span id="battery-level">--</span>
+                    %
+                </span>
+            </div>
+            
+        </div>
+
+        <div class="divider-line">
+        
+    </div>
+
+        <div class="controls-main-cont">
+            <div class="flash-sound-freq">
+                <div class="flash-sound-cont">
+                    <div class="flash-cont">
+                        <span id="flash" class="material-symbols-outlined">highlight</span>
+                    </div>
+                    <div class="sound-cont">
+                        <span id="sound" class="material-symbols-outlined">music_note</span>
+                    </div>
+                </div>
+                <div class="select-cont">
+                    <select id="update-interval">
+                        <option value="def">Select Monitoring Freq</option>
+                        <option value="1m">1 Minute</option>
+                        <option value="10s">10 Seconds</option>
+                        <option value="5s">5 Seconds</option>
+                        <option value="2s">2 Seconds</option>
+                        <option value="1s">1 Second</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="logout-cont">
+                <div id="logout">
+                    <span style="font-size: 18px;" class="material-symbols-outlined">
+                        logout
+                    </span>
+                    Logout
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <span id="expand" class="material-symbols-outlined">
+        expand_less
+    </span>
+
+    <div class="map-cont">
+        <div id="map">
+        </div>
+    </div>
+
+    <script>
+        var map;
+        let marker;
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 19.0802, lng: 72.8308 },
+                zoom: 18
+            });
+            marker = new google.maps.Marker({
+                position: new google.maps.LatLng(19.186610, 72.865046),
+                map: map,
+            });
+        }
+
+        const mainCont = document.getElementById("mainCont");
+        const expand = document.getElementById("expand");
+
+        expand.addEventListener("click", () => {
+            if (expand.innerText.includes("expand_less")) {
+                mainCont.style.bottom = "2%";
+                expand.innerText = "expand_more";
+            }
+            else{
+                mainCont.style.bottom = "-1000px";
+                expand.innerText = "expand_less";
+            }
+            
+        });
+
+    </script>
+
+    <script type="module">
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
+        import { getDatabase, ref, onValue, get, set, child, push, update } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAm3rC0BViZh2QUHlS8GMMvgly1MBHd5Qs",
+            authDomain: "fivedegreesecurityapp.firebaseapp.com",
+            databaseURL: "https://fivedegreesecurityapp-default-rtdb.firebaseio.com",
+            projectId: "fivedegreesecurityapp",
+            storageBucket: "fivedegreesecurityapp.appspot.com",
+            messagingSenderId: "227220294221",
+            appId: "1:227220294221:web:3a34044bc4eb58a3ec2a04",
+            measurementId: "G-092G75CY7K"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+        const db = getDatabase();
+        var uid = "uid"
+
+        const latitude = document.getElementById("h1");
+        const longitude = document.getElementById("h2");
+        const address = document.getElementById("h3");
+        const devicename = document.getElementById("model-name");
+        const signupdate = document.getElementById("register-date-time");
+        const logindate = document.getElementById("last-login");
+        var select = document.getElementById("update-interval");
+        const flash = document.getElementById("flash");
+        const sound = document.getElementById("sound");
+        const flashActive = document.getElementById("flash-active-cont");
+        const soundActive = document.getElementById("sound-active-cont");
+        const flashSoundActive = document.getElementById("flash-sound-active-cont");
+        const ringModeIcon = document.getElementById("ringmode-icon");
+        const BatteryIcon = document.getElementById("battery-icon");
+        const BatteryLevel = document.getElementById("battery-level");
+
+
+        const logout = document.getElementById("logout");
+        logout.addEventListener("click", function (logoutEvent) {
+            auth.signOut().then(() => {
+                console.log("logged out.");
+                window.location.href = "login/index.html"
+            })
+        });
+
+        auth.onAuthStateChanged(function (user) {
+            if (user) {
+                console.log("User is signed in");
+                loadData(user.uid);
+                uid = user.uid;
+            } else {
+                console.log("User is signed out");
+                window.location.href = "login/index.html";
+            }
+        });
+
+        function loadData(uid) {
+            var read = ref(db, 'Users/' + uid);
+            onValue(read, (snapshot) => {
+                const data = snapshot.val();
+                latitude.innerText = data.latitude;
+                longitude.innerText = data.longitude;
+                address.innerText = data.address;
+                devicename.innerText = data.deviceName;
+                const signupdetails = data.registerTime + " " + data.registerDate;
+                const logindetails = data.loginTime + " " + data.loginDate;
+                signupdate.innerText = signupdetails;
+                logindate.innerText = logindetails;
+
+                var newLocation = new google.maps.LatLng(data.latitude, data.longitude);
+                map.setCenter(newLocation);
+                marker.setPosition(new google.maps.LatLng(data.latitude, data.longitude));
+
+                if(data.flash == "true" && data.playSound == "true"){
+                    flashSoundActive.style.display="flex";
+                    flashActive.style.display = "none";
+                    soundActive.style.display = "none";
+                }
+                else{
+                    flashSoundActive.style.display="none";
+                }
+                if(data.flash == "true" && data.playSound == "false"){
+                    flashActive.style.display="flex";
+                }
+                else{
+                    flashActive.style.display="none";
+                }
+                if(data.playSound == "true" && data.flash == "false"){
+                    soundActive.style.display="flex";
+                }
+                else{
+                    soundActive.style.display="none";
+                }
+
+                if(data.ringMode == "silent"){
+                    ringModeIcon.innerText = "notifications_off";
+                }
+                else if(data.ringMode == "vibrate"){
+                    ringModeIcon.innerText = "vibration";
+                }
+                else {
+                    ringModeIcon.innerText = "notifications_active";
+                }
+
+                BatteryLevel.innerText = data.batteryLevel;
+                if(data.batteryLevel > 90){
+                    BatteryIcon.innerText = "battery_full";
+                }
+                else if(data.batteryLevel > 70){
+                    BatteryIcon.innerText = "battery_5_bar";
+                }
+                else if(data.batteryLevel > 50){
+                    BatteryIcon.innerText = "battery_4_bar";
+                }
+                else if(data.batteryLevel > 40){
+                    BatteryIcon.innerText = "battery_vert_050";
+                }
+                else if(data.batteryLevel < 40){
+                    BatteryIcon.innerText = "battery_3_bar";
+                }
+                else if(data.batteryLevel < 30){
+                    BatteryIcon.innerText = "battery_2_bar";
+                }
+                else if(data.batteryLevel < 20){
+                    BatteryIcon.innerText = "battery_vert_020";
+                }
+                else if(data.batteryLevel < 11){
+                    BatteryIcon.innerText = "battery_vert_005";
+                }
+                else{
+                    BatteryIcon.innerText = "battery_vert_050";
+                }
+            });
+        }
+
+        function writeNewPost(selectedValue, uid) {
+            const dbRef = ref(getDatabase());
+            get(child(dbRef, `Users/${uid}`)).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    const postData = {
+                        address: data.address,
+                        deviceName: data.deviceName,
+                        email: data.email,
+                        frontPhoto: data.frontPhoto,
+                        isMonitoring: data.isMonitoring,
+                        latitude: data.latitude,
+                        loginDate: data.loginDate,
+                        loginTime: data.loginTime,
+                        longitude: data.longitude,
+                        monitorFrequency: selectedValue,
+                        rearPhoto: data.rearPhoto,
+                        registerDate: data.registerDate,
+                        registerTime: data.registerTime,
+                        rindMode: data.rindMode,
+                        flash: data.flash,
+                        playSound: data.playSound
+                    };
+                    const updates = {};
+                    updates['Users/' + uid] = postData;
+                    return update(ref(db), updates);
+                } else {
+                    console.log("No data available");
+                }
+            }).catch((error) => {
+                console.error(error);
+            });
+        }
+        select.addEventListener("change", function () {
+            var selectedValue = select.value;
+            if (selectedValue != "def") {
+                writeNewPost(selectedValue, uid);
+            }
+        });
+
+        flash.addEventListener("click", function(){
+            const dbRef = ref(getDatabase());
+            get(child(dbRef, `Users/${uid}`)).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    const postData = {
+                        address: data.address,
+                        deviceName: data.deviceName,
+                        email: data.email,
+                        frontPhoto: data.frontPhoto,
+                        isMonitoring: data.isMonitoring,
+                        latitude: data.latitude,
+                        loginDate: data.loginDate,
+                        loginTime: data.loginTime,
+                        longitude: data.longitude,
+                        flash: "true",
+                        playSound: data.playSound,
+                        ringMode: data.ringMode,
+                        monitorFrequency: data.monitorFrequency,
+                        rearPhoto: data.rearPhoto,
+                        registerDate: data.registerDate,
+                        registerTime: data.registerTime
+                    };
+                    const updates = {};
+                    updates['Users/' + uid] = postData;
+                    return update(ref(db), updates);
+                } else {
+                    console.log("No data available");
+                }
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+
+        sound.addEventListener("click", function(){
+            const dbRef = ref(getDatabase());
+            get(child(dbRef, `Users/${uid}`)).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    const postData = {
+                        address: data.address,
+                        deviceName: data.deviceName,
+                        email: data.email,
+                        frontPhoto: data.frontPhoto,
+                        isMonitoring: data.isMonitoring,
+                        latitude: data.latitude,
+                        loginDate: data.loginDate,
+                        loginTime: data.loginTime,
+                        longitude: data.longitude,
+                        flash: data.flash,
+                        playSound: "true",
+                        ringMode: data.ringMode,
+                        monitorFrequency: data.monitorFrequency,
+                        rearPhoto: data.rearPhoto,
+                        registerDate: data.registerDate,
+                        registerTime: data.registerTime
+                    };
+                    const updates = {};
+                    updates['Users/' + uid] = postData;
+                    return update(ref(db), updates);
+                } else {
+                    console.log("No data available");
+                }
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    
+    </script>
+
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCz7r0kArgod0QI4zO2eOeLRGqyyDDJo5Y&callback=initMap">
+        </script>
+
+</body>
+
+</html>
