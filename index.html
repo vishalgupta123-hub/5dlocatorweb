@@ -215,7 +215,7 @@
         logout.addEventListener("click", function (logoutEvent) {
             auth.signOut().then(() => {
                 console.log("logged out.");
-                window.location.href = "login/index.html"
+                window.location.href = "login/"
             })
         });
 
@@ -226,7 +226,7 @@
                 uid = user.uid;
             } else {
                 console.log("User is signed out");
-                window.location.href = "login/index.html";
+                window.location.href = "login/";
             }
         });
 
