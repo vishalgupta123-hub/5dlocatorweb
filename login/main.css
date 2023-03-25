@@ -76,6 +76,26 @@ form .login {
     border-radius: 5px;
   }
 
+@media only screen and (max-width: 600px) {
+    
+        form h3 {
+        font-size: 2rem;
+    }
+    
+    form input {
+    width: 85%;
+    padding: 5px 10px;
+    font-size: 12px;
+    }
+    
+    form .login {
+    width: 95%;
+    padding: 8px 0;
+    font-size: 12px;
+    letter-spacing:4px;
+    }
+}
+
 @media only screen and (max-width: 500px) {
 
     form h3 {
