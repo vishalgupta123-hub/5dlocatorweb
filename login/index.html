@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Login | 5D Loactor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+
+  <link href="main.css" rel="stylesheet" />
+  <link rel="icon" type="image/x-icon" href="../favicon.png">
+
+</head>
+
+<body>
+
+  <form>
+    <h3>Login to your account</h3>
+    <input type="text" placeholder="example@example.com" id="emailinput">
+    <input type="password" placeholder="XXXXXXXXX" id="passwordinput">
+    <button id="login" class="login">Log In</button>
+  </form>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
+    import { getDatabase } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAm3rC0BViZh2QUHlS8GMMvgly1MBHd5Qs",
+      authDomain: "fivedegreesecurityapp.firebaseapp.com",
+      databaseURL: "https://fivedegreesecurityapp-default-rtdb.firebaseio.com",
+      projectId: "fivedegreesecurityapp",
+      storageBucket: "fivedegreesecurityapp.appspot.com",
+      messagingSenderId: "227220294221",
+      appId: "1:227220294221:web:3a34044bc4eb58a3ec2a04",
+      measurementId: "G-092G75CY7K"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+
+
+    const auth = getAuth();
+
+    const emailInput = document.getElementById("emailinput");
+    const passwordInput = document.getElementById("passwordinput");
+    const loginBtn = document.getElementById("login");
+
+    loginBtn.addEventListener("click", function (loginEvent) {
+      loginEvent.preventDefault();
+
+      var email = emailInput.value;
+      var password = passwordInput.value;
+
+      if (email == "" || password == "") {
+        alert("Both fields are required.");
+        return false;
+      } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+        alert("Invalid email address.");
+        return false;
+      } else if (password.length < 6) {
+        alert("Password must be at least 6 characters long.");
+        return false;
+      }
+      loginBtn.className = "loginBtnDisabled";
+      signInWithEmailAndPassword(auth, email, password)
+        .then(function (user) { console.log("User signed in:", user); })
+        .catch(function (error) {
+          if (error.code == "auth/wrong-password") {
+            alert("Wrong Password. Reload the page.");
+          }
+          else if(error.code == "auth/too-many-requests"){
+             alert("Too many attempts to log in. Please try later.");
+          }
+        });
+    });
+
+    auth.onAuthStateChanged(function (user) {
+      if (user) {
+        // User is signed in
+        console.log("User is signed in:", user.uid);
+        window.location.href = "../index.html";
+      }
+      else {
+        // User is signed out
+        console.log("User is signed out");
+      }
+    });
+
+  </script>
+</body>
+
+</html>
