@@ -25,6 +25,15 @@ form h3{
     font-family: 'lora', system-ui;
 }
 
+.input-cont{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
 form input{
     width: 100%;
     padding: 15px 20px;
