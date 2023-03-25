@@ -78,7 +78,7 @@ form .login {
 
 @media only screen and (max-width: 600px) {
     
-        form h3 {
+    form h3 {
         font-size: 2rem;
     }
     
