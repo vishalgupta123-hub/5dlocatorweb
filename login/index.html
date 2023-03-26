@@ -88,6 +88,9 @@
           else if(error.code == "auth/too-many-requests"){
              alert("Too many attempts to log in. Please try later.");
           }
+          else{
+            alert("Error: ", error.code)
+          }
         });
     });
 
