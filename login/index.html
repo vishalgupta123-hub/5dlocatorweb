@@ -82,16 +82,43 @@
         .then(function (user) { console.log("User signed in:", user); })
         .catch(function (error) {
           if (error.code == "auth/wrong-password") {
-            alert("Wrong Password. Reload the page.");
+            alert("Wrong Password.");
             loginBtn.className = "login";
           }
           else if(error.code == "auth/too-many-requests"){
-             alert("Too many attempts to log in. Please try later.");
+             alert("Too many attempts to log in. Please try again later.");
           }
-          else{
+          else if(error.code == "auth/invalid-email"){
+            alert("Invalid Email. Please check your email again.");
             loginBtn.className = "login";
-            alert("Error: ", error.code);
           }
+        else if("auth/invalid-credential"){
+            alert("Invalid Credentials. Please check email or password.");
+            loginBtn.className = "login";
+        }
+        else if("auth/unverified-email"){
+            alert("Email not verified. Please verify the Email.");
+            loginBtn.className = "login";
+            loginBtn.disabled = true;
+        }
+        else if("auth/user-cancelled"){
+            alert("You are not allowed to access the account.");
+            loginBtn.className = "login";
+            loginBtn.disabled = true;
+        }
+        else if("auth/user-not-found"){
+            alert("Looks like your account has been deleted.");
+            loginBtn.className = "login";
+            loginBtn.disabled = true;
+        }
+        else if("auth/user-disabled"){
+            alert("Looks like your account has been disabled.");
+            loginBtn.className = "login";
+            loginBtn.disabled = true;
+        }
+        else{
+          alert("Some error occured. Please try again later.");
+        }
         });
     });
 
