@@ -89,7 +89,8 @@
              alert("Too many attempts to log in. Please try later.");
           }
           else{
-            alert("Error: ", error.code)
+            loginBtn.className = "login";
+            alert("Error: ", error.code);
           }
         });
     });
