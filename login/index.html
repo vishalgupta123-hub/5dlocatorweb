@@ -87,6 +87,7 @@
           }
           else if(error.code == "auth/too-many-requests"){
              alert("Too many attempts to log in. Please try again later.");
+            loginBtn.disabled = true;
           }
           else if(error.code == "auth/invalid-email"){
             alert("Invalid Email. Please check your email again.");
@@ -97,23 +98,18 @@
             loginBtn.className = "login";
         }
         else if("auth/unverified-email"){
-            alert("Email not verified. Please verify the Email.");
-            loginBtn.className = "login";
+            alert("Email not verified. Please verify the email address first.");
             loginBtn.disabled = true;
         }
         else if("auth/user-cancelled"){
             alert("You are not allowed to access the account.");
-            loginBtn.className = "login";
-            loginBtn.disabled = true;
         }
         else if("auth/user-not-found"){
             alert("Looks like your account has been deleted.");
-            loginBtn.className = "login";
             loginBtn.disabled = true;
         }
         else if("auth/user-disabled"){
             alert("Looks like your account has been disabled.");
-            loginBtn.className = "login";
             loginBtn.disabled = true;
         }
         else{
